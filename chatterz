@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Chat and Whiteboard</title>
+<style>
+    /* CSS for chat window */
+    #chat-window {
+        width: 300px;
+        height: 400px;
+        border: 1px solid #ccc;
+        overflow-y: scroll;
+    }
+    /* CSS for whiteboard */
+    #whiteboard {
+        width: 600px;
+        height: 400px;
+        border: 1px solid #ccc;
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+    <div id="chat-window">
+        <div id="chat-content"></div>
+    </div>
+    <input type="text" id="message" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+
+    <canvas id="whiteboard"></canvas>
+
+    <script>
+        // Chat functionality
+        function sendMessage() {
+            var message = document.getElementById("message").value;
+            if (message.trim() !== "") {
+                var chatContent = document.getElementById("chat-content");
+                var messageElement = document.createElement("p");
+                messageElement.textContent = message;
+                chatContent.appendChild(messageElement);
+                document.getElementById("message").value = "";
+            }
+        }
+
+        // Whiteboard functionality
+        var canvas = document.getElementById("whiteboard");
+        var context = canvas.getContext("2d");
+        var isDrawing = false;
+
+        canvas.addEventListener("mousedown", function(event) {
+            isDrawing = true;
+            context.beginPath();
+            context.moveTo(event.offsetX, event.offsetY);
+        });
+
+        canvas.addEventListener("mousemove", function(event) {
+            if (isDrawing) {
+                context.lineTo(event.offsetX, event.offsetY);
+                context.stroke();
+            }
+        });
+
+        canvas.addEventListener("mouseup", function() {
+            isDrawing = false;
+        });
+
+        canvas.addEventListener("mouseout", function() {
+            isDrawing = false;
+        });
+    </script>
+</body>
+</html>
